@@ -68,8 +68,6 @@ export default function Home() {
     <path d="M7 17.5v2" />
     <path d="M17 17.5v2" />
   </svg>
-  Envíos a todo el país
-</span>
       Envíos a todo el país
     </span>
 
