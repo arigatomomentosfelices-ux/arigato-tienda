@@ -1,10 +1,10 @@
 const categories = [
-  { icon: "📚", title: "Fotolibros", text: "Recuerdos para guardar siempre" },
-  { icon: "🖍️", title: "Pizarras", text: "Un souvenir que sigue jugando" },
-  { icon: "🎒", title: "Identificadores", text: "Detalles únicos para cada invitado" },
-  { icon: "🎨", title: "Kits de arte", text: "Creatividad para disfrutar" },
-  { icon: "🖌️", title: "Para colorear", text: "Momentos de diversión" },
-  { icon: "✏️", title: "Marcadores", text: "Pequeños detalles, grandes sonrisas" },
+  { icon: "◫", title: "Fotolibros", text: "Recuerdos para guardar siempre" },
+  { icon: "▱", title: "Pizarras", text: "Un souvenir que sigue jugando" },
+  { icon: "◇", title: "Identificadores", text: "Detalles únicos para cada invitado" },
+  { icon: "✦", title: "Kits de arte", text: "Creatividad para disfrutar" },
+  { icon: "✎", title: "Para colorear", text: "Momentos de diversión" },
+  { icon: "⌁", title: "Marcadores", text: "Pequeños detalles, grandes sonrisas" },
 ];
 
 const products = [
