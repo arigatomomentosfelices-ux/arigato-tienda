@@ -51,7 +51,7 @@ export default function Home() {
       display: "block",
     }}
   />
-</a>>
+</a>
 
           <nav className="main-nav">
             <a href="#inicio">Inicio</a>
