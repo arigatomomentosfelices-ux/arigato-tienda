@@ -30,81 +30,80 @@ export default function Home() {
     <main>
       {/* BARRA SUPERIOR */}
       <div className="top-bar">
-        <div className="container top-bar-inner">
-          <span>
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M12 3l1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4L12 3z" />
-    <path d="M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15z" />
-  </svg>
-  Productos personalizados
-<span>
-  <svg
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M12 3l1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4L12 3z" />
-    <path d="M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15z" />
-  </svg>
-  Productos personalizados
-</span>
+  <div className="container top-bar-inner">
 
-<span>
-  <svg
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M3 12h13" />
-    <path d="M13 6l6 6-6 6" />
-    <path d="M5 7h3" />
-    <path d="M5 17h3" />
-  </svg>
-  Envíos a todo el país
-</span>
+    <span>
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      >
+        <path d="M12 3l1.4 4.6L18 9l-4.6 1.4L12 15l-1.4-4.6L6 9l4.6-1.4L12 3z" />
+        <path d="M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15z" />
+      </svg>
+      Productos personalizados
+    </span>
 
-<span>
-  <svg
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect x="3" y="6" width="18" height="12" rx="2" />
-    <path d="M3 10h18" />
-    <path d="M7 14h4" />
-  </svg>
-  Mercado Pago
-</span>
+    <span>
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      >
+        <path d="M3 12h13" />
+        <path d="M13 6l6 6-6 6" />
+        <path d="M5 7h3" />
+        <path d="M5 17h3" />
+      </svg>
+      Envíos a todo el país
+    </span>
 
-<span>
-  <svg
-    viewBox="0 0 24 24"
-    aria-hidden="true"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
-  </svg>
-  Atención personalizada
-</span>
-        </div>
-      </div>
+    <span>
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      >
+        <rect x="3" y="6" width="18" height="12" rx="2" />
+        <path d="M3 10h18" />
+        <path d="M7 14h4" />
+      </svg>
+      Mercado Pago
+    </span>
 
+    <span>
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      >
+        <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
+      </svg>
+      Atención personalizada
+    </span>
+
+  </div>
+</div>
       {/* HEADER */}
       <header className="site-header">
         <div className="container header-inner">
