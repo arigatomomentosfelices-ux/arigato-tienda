@@ -42,9 +42,16 @@ export default function Home() {
       <header className="site-header">
         <div className="container header-inner">
           <a href="/" className="brand">
-            <strong>ARIGATO</strong>
-            <span>Momentos felices</span>
-          </a>
+  <img
+    src="/otro%20logo.png"
+    alt="ARIGATO"
+    style={{
+      width: "145px",
+      height: "auto",
+      display: "block",
+    }}
+  />
+</a>>
 
           <nav className="main-nav">
             <a href="#inicio">Inicio</a>
