@@ -31,10 +31,10 @@ export default function Home() {
       {/* BARRA SUPERIOR */}
       <div className="top-bar">
         <div className="container top-bar-inner">
-          <span>✨ Productos personalizados</span>
-          <span>🚚 Envíos a todo el país</span>
-          <span>💳 Mercado Pago</span>
-          <span>💬 Atención personalizada</span>
+          <span>✦ Productos personalizados</span>
+          <span>⌁ Envíos a todo el país</span>
+          <span>◇ Mercado Pago</span>
+          <span>♡ Atención personalizada</span>
         </div>
       </div>
 
