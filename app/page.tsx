@@ -50,21 +50,26 @@ export default function Home() {
     </span>
 
     <span>
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        style={{ width: "18px", height: "18px", flexShrink: 0 }}
-      >
-        <path d="M3 12h13" />
-        <path d="M13 6l6 6-6 6" />
-        <path d="M5 7h3" />
-        <path d="M5 17h3" />
-      </svg>
+  <svg
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ width: "18px", height: "18px", flexShrink: 0 }}
+  >
+    <path d="M2.5 13.5h19" />
+    <path d="M6.5 13.5l2-7h4l3.5 7" />
+    <path d="M13 6.5l2.5-3" />
+    <path d="M15.5 3.5l1.5 2" />
+    <path d="M6.5 13.5l-2 4h15l-2-4" />
+    <path d="M7 17.5v2" />
+    <path d="M17 17.5v2" />
+  </svg>
+  Envíos a todo el país
+</span>
       Envíos a todo el país
     </span>
 
