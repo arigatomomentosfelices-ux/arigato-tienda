@@ -74,6 +74,12 @@ img {
   gap: 34px;
 }
 
+.top-bar-inner span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* =========================
    HEADER
 ========================= */
