@@ -1,10 +1,10 @@
 const categories = [
-  { icon: "◫", title: "Fotolibros", text: "Recuerdos para guardar siempre" },
-  { icon: "▱", title: "Pizarras", text: "Un souvenir que sigue jugando" },
-  { icon: "◇", title: "Identificadores", text: "Detalles únicos para cada invitado" },
-  { icon: "✦", title: "Kits de arte", text: "Creatividad para disfrutar" },
-  { icon: "✎", title: "Para colorear", text: "Momentos de diversión" },
-  { icon: "⌁", title: "Marcadores", text: "Pequeños detalles, grandes sonrisas" },
+  { icon: "book", title: "Fotolibros", text: "Recuerdos para guardar siempre" },
+  { icon: "board", title: "Pizarras", text: "Un souvenir que sigue jugando" },
+  { icon: "tag", title: "Identificadores", text: "Detalles únicos para cada invitado" },
+  { icon: "palette", title: "Kits de arte", text: "Creatividad para disfrutar" },
+  { icon: "pencil", title: "Para colorear", text: "Momentos de diversión" },
+  { icon: "marker", title: "Marcadores", text: "Pequeños detalles, grandes sonrisas" },
 ];
 
 const products = [
@@ -24,6 +24,85 @@ const products = [
     description: "Todo listo para crear, pintar y disfrutar.",
   },
 ];
+
+function CategoryIcon({ name }: { name: string }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    width: 30,
+    height: 30,
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.5,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true as const,
+  };
+
+  let drawing;
+
+  switch (name) {
+    case "book":
+      drawing = (
+        <>
+          <rect x="4" y="3" width="16" height="18" rx="2" />
+          <path d="M8 3v18M11 8h5M11 12h5" />
+        </>
+      );
+      break;
+
+    case "board":
+      drawing = (
+        <>
+          <rect x="3" y="4" width="18" height="14" rx="2" />
+          <path d="M8 21l4-3 4 3M7 8h10" />
+        </>
+      );
+      break;
+
+    case "tag":
+      drawing = (
+        <>
+          <path d="M20 13l-7 7L3 10V4h6z" />
+          <circle cx="7.5" cy="7.5" r="1" />
+        </>
+      );
+      break;
+
+    case "palette":
+      drawing = (
+        <>
+          <path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1.5-3.3 1.8 1.8 0 0 1 1.4-3h1.2A4.9 4.9 0 0 0 22 9.8C22 6 17.5 3 12 3z" />
+          <circle cx="7.5" cy="10" r="1" />
+          <circle cx="10" cy="6.5" r="1" />
+          <circle cx="15" cy="7" r="1" />
+        </>
+      );
+      break;
+
+    case "pencil":
+      drawing = (
+        <>
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z" />
+        </>
+      );
+      break;
+
+    case "marker":
+      drawing = (
+        <>
+          <path d="M5 19l3.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10z" />
+          <path d="M13.5 6.5l4 4M4 20h16" />
+        </>
+      );
+      break;
+
+    default:
+      drawing = null;
+  }
+
+  return <svg {...common}>{drawing}</svg>;
+}
 
 export default function Home() {
   return (
@@ -215,7 +294,9 @@ export default function Home() {
                 className="category-card"
                 key={category.title}
               >
-                <div className="category-icon">{category.icon}</div>
+                <div className="category-icon">
+  <CategoryIcon name={category.icon} />
+</div>
                 <h3>{category.title}</h3>
                 <p>{category.text}</p>
                 <span className="category-arrow">→</span>
