@@ -1,7 +1,7 @@
 const categories = [
   { icon: "book", title: "Fotolibros", text: "Recuerdos para guardar siempre" },
   { icon: "board", title: "Pizarras", text: "Un souvenir que sigue jugando" },
-  { icon: "tag", title: "Identificadoresfunction CategoryIcon", text: "Detalles únicos para cada invitado" },
+ { icon: "tag", title: "Identificadores", text: "Detalles únicos para cada invitado" },
   { icon: "palette", title: "Kits de arte", text: "Creatividad para disfrutar" },
   { icon: "pencil", title: "Para colorear", text: "Momentos de diversión" },
   { icon: "marker", title: "Marcadores", text: "Pequeños detalles, grandes sonrisas" },
