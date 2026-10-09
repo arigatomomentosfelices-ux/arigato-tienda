@@ -1,7 +1,7 @@
 const categories = [
   { icon: "book", title: "Fotolibros", text: "Recuerdos para guardar siempre" },
   { icon: "board", title: "Pizarras", text: "Un souvenir que sigue jugando" },
-  { icon: "tag", title: "Identificadores", text: "Detalles únicos para cada invitado" },
+  { icon: "tag", title: "Identificadoresfunction CategoryIcon", text: "Detalles únicos para cada invitado" },
   { icon: "palette", title: "Kits de arte", text: "Creatividad para disfrutar" },
   { icon: "pencil", title: "Para colorear", text: "Momentos de diversión" },
   { icon: "marker", title: "Marcadores", text: "Pequeños detalles, grandes sonrisas" },
@@ -42,60 +42,69 @@ function CategoryIcon({ name }: { name: string }) {
 
   switch (name) {
     case "book":
-      drawing = (
-        <>
-          <rect x="4" y="3" width="16" height="18" rx="2" />
-          <path d="M8 3v18M11 8h5M11 12h5" />
-        </>
-      );
-      break;
+  drawing = (
+    <>
+      <path d="M12 6.5C9.5 4.5 6 4 3 5v14c3-1 6.5-.5 9 1.5" />
+      <path d="M12 6.5C14.5 4.5 18 4 21 5v14c-3-1-6.5-.5-9 1.5" />
+      <path d="M12 6.5v14" />
+      <path d="M6 8.5c1.5-.3 3-.1 4 .5" />
+      <path d="M14 9c1.2-.6 2.7-.8 4-.5" />
+    </>
+  );
+  break;
 
     case "board":
-      drawing = (
-        <>
-          <rect x="3" y="4" width="18" height="14" rx="2" />
-          <path d="M8 21l4-3 4 3M7 8h10" />
-        </>
-      );
-      break;
+  drawing = (
+    <>
+      <rect x="3" y="3" width="18" height="14" rx="1.5" />
+      <path d="M7 21l5-4 5 4" />
+      <path d="M7 7h10M7 10h6" />
+    </>
+  );
+  break;
 
     case "tag":
-      drawing = (
-        <>
-          <path d="M20 13l-7 7L3 10V4h6z" />
-          <circle cx="7.5" cy="7.5" r="1" />
-        </>
-      );
-      break;
+  drawing = (
+    <>
+      <path d="M20 12.5L12.5 20 3.5 11V4h7z" />
+      <circle cx="7.5" cy="8" r="1.2" />
+      <path d="M11 7.5l5 5" />
+    </>
+  );
+  break;
 
     case "palette":
-      drawing = (
-        <>
-          <path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 1.5-3.3 1.8 1.8 0 0 1 1.4-3h1.2A4.9 4.9 0 0 0 22 9.8C22 6 17.5 3 12 3z" />
-          <circle cx="7.5" cy="10" r="1" />
-          <circle cx="10" cy="6.5" r="1" />
-          <circle cx="15" cy="7" r="1" />
-        </>
-      );
-      break;
+  drawing = (
+    <>
+      <path d="M12 3a9 9 0 1 0 0 18h1.2a2 2 0 0 0 1.5-3.3 1.8 1.8 0 0 1 1.4-3H18a4 4 0 0 0 4-4C22 6.6 17.5 3 12 3z" />
+      <circle cx="7.5" cy="10" r="1" />
+      <circle cx="10" cy="6.5" r="1" />
+      <circle cx="15" cy="7" r="1" />
+      <circle cx="8" cy="14" r="1" />
+    </>
+  );
+  break;
 
     case "pencil":
-      drawing = (
-        <>
-          <path d="M12 20h9" />
-          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z" />
-        </>
-      );
-      break;
+  drawing = (
+    <>
+      <path d="M12 20h9" />
+      <path d="M3 21l3.8-.8L19.5 7.5a2.5 2.5 0 0 0-3.5-3.5L3.3 17z" />
+      <path d="M14.5 6l3.5 3.5" />
+    </>
+  );
+  break;
 
     case "marker":
-      drawing = (
-        <>
-          <path d="M5 19l3.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10z" />
-          <path d="M13.5 6.5l4 4M4 20h16" />
-        </>
-      );
-      break;
+  drawing = (
+    <>
+      <path d="M4 17L15.5 5.5a2.1 2.1 0 0 1 3 3L7 20H4z" />
+      <path d="M13.5 7.5l4 4" />
+      <path d="M4 17l3 3" />
+      <path d="M3 21h18" />
+    </>
+  );
+  break;
 
     default:
       drawing = null;
