@@ -332,11 +332,17 @@ export default function Home() {
           <div className="products-grid">
             {products.map((product, index) => (
               <article className="product-card" key={product.name}>
-                <div className={`product-image product-image-${index + 1}`}>
+                 <div className={`product-image product-image-${index + 1}`}>
   {index === 0 ? (
     <img
       src="/pizarra-bosque-marie.png"
-      alt="Pizarra personalizada infantil con ilustraciones de animales del bosque"
+      alt="Pizarra personalizada infantil con animales del bosque"
+      className="product-photo"
+    />
+  ) : index === 1 ? (
+    <img
+      src="/identificador-ballet.png"
+      alt="Identificadores personalizados de mochila con diseño de ballet"
       className="product-photo"
     />
   ) : (
