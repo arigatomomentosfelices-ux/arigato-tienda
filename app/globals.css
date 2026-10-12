@@ -522,8 +522,9 @@ img {
   height: 310px;
   position: relative;
   display: flex;
-  align-items: flex-end;
-  padding: 20px;
+  align-items: stretch;
+  justify-content: center;
+  padding: 10px;
 }
 
 .product-image span {
