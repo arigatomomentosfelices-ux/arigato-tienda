@@ -7,7 +7,7 @@ const precioPorUnidad = (cantidad: number) => {
   if (cantidad <= 14) return 3675;
   if (cantidad <= 19) return 3150;
   if (cantidad <= 24) return 2995;
-  return 3150;
+  return 2880;
 };
 
 const formatoPrecio = (importe: number) =>
