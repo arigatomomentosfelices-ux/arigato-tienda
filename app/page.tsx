@@ -212,7 +212,7 @@ export default function Home() {
 
           <nav className="main-nav">
             <a href="#inicio">Inicio</a>
-            <a href="#productos">Productos</a>
+            <a href="/productos">Productos</a>
             <a href="#fotolibros">Fotolibros</a>
             <a href="#cumple">Cumpleaños</a>
             <a href="#combos">Combos</a>
