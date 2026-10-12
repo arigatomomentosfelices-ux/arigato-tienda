@@ -59,17 +59,33 @@ export default function ProductosPage() {
         </div>
 
         <div className="category-grid">
-          {categorias.map((categoria) => (
-            <article
-              className={`catalog-category ${categoria.color}`}
-              key={categoria.nombre}
-            >
-              <span className="category-symbol">✦</span>
-              <h3>{categoria.nombre}</h3>
-              <p>{categoria.descripcion}</p>
-              <span className="category-arrow">Explorar →</span>
-            </article>
-          ))}
+         
+{categorias.map((categoria) => {
+  const destinos: Record<string, string> = {
+    "Pizarras personalizadas": "/productos/pizarras",
+    "Identificadores de mochila": "/productos/identificadores",
+    "Bolsitas golosineras": "/productos/bolsitas-golosineras",
+    "Libritos para colorear": "/productos/libritos-para-colorear",
+    "Kits de arte": "/productos/kits-de-arte",
+    "Marcadores": "/productos/marcadores",
+    "Combos para cumpleaños": "/productos/combos",
+  };
+
+  return (
+    <a
+      className={`catalog-category ${categoria.color}`}
+      key={categoria.nombre}
+      href={destinos[categoria.nombre] || "/productos"}
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
+      <span className="category-symbol">✦</span>
+      <h3>{categoria.nombre}</h3>
+      <p>{categoria.descripcion}</p>
+      <span className="category-arrow">Ver categoría →</span>
+    </a>
+  );
+})}
+
         </div>
       </section>
     </main>
