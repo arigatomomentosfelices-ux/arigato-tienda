@@ -4,7 +4,16 @@ import { neon } from "@neondatabase/serverless";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const secret = process.env.ML_TEST_SECRET;
+  const provided = request.headers.get("x-test-secret");
+
+  if (!secret || provided !== secret) {
+    return NextResponse.json(
+      { error: "No autorizado." },
+      { status: 401 }
+    );
+  }
   const databaseUrl = process.env.DATABASE_URL;
 
   if (!databaseUrl) {
