@@ -60,10 +60,13 @@ export async function GET(request: NextRequest) {
       !tokenData.refresh_token ||
       !tokenData.user_id
     ) {
-      console.error("Error al obtener tokens de Mercado Libre:", {
-        status: tokenResponse.status,
-        error: tokenData.error,
-      });
+     console.error("Diagnóstico de respuesta OAuth:", {
+  status: tokenResponse.status,
+  keys: Object.keys(tokenData),
+  error: tokenData.error ?? null,
+  error_description: tokenData.error_description ?? null,
+  message: tokenData.message ?? null,
+});
 
       return NextResponse.json(
         { error: "No se pudo completar la autorización con Mercado Libre." },
