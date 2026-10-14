@@ -53,7 +53,17 @@ export async function GET(request: NextRequest) {
     );
 
     const tokenData = await tokenResponse.json();
-
+console.error("Diagnóstico OAuth: campos y tipos", {
+  campos: Object.keys(tokenData),
+  tipos: Object.fromEntries(
+    Object.entries(tokenData).map(([key, value]) => [
+      key,
+      typeof value,
+    ])
+  ),
+  refresh_token_presente: Boolean(tokenData.refresh_token),
+  user_id_presente: Boolean(tokenData.user_id),
+});
     if (
       !tokenResponse.ok ||
       !tokenData.access_token ||
