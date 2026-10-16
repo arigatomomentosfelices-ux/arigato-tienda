@@ -1,9 +1,11 @@
+
 import { NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 
 export const dynamic = "force-dynamic";
 
 const MARGEN_RENOVACION_MS = 60 * 60 * 1000;
+const BLOQUEO_MS = 2 * 60 * 1000;
 
 export async function POST(request: Request) {
   const secret = process.env.ML_REFRESH_SECRET;
@@ -27,8 +29,31 @@ export async function POST(request: Request) {
     );
   }
 
+  const sql = neon(databaseUrl);
+  let bloqueoAdquirido = false;
+
   try {
-    const sql = neon(databaseUrl);
+    const lockRows = await sql`
+      UPDATE mercadolibre_refresh_lock
+      SET locked_until = NOW() + (${BLOQUEO_MS} * INTERVAL '1 millisecond'),
+          locked_at = NOW()
+      WHERE id = 1
+        AND locked_until < NOW()
+      RETURNING id
+    `;
+
+    if (!lockRows.length) {
+      return NextResponse.json(
+        {
+          renovado: false,
+          ocupado: true,
+          mensaje: "Ya hay una renovación en curso. Intentá más tarde.",
+        },
+        { status: 409 }
+      );
+    }
+
+    bloqueoAdquirido = true;
 
     const rows = await sql`
       SELECT seller_id, refresh_token, expires_at
@@ -39,10 +64,7 @@ export async function POST(request: Request) {
 
     if (!rows.length || !rows[0].refresh_token) {
       return NextResponse.json(
-        {
-          error:
-            "No hay una conexión con token de renovación guardado.",
-        },
+        { error: "No hay una conexión con token de renovación guardado." },
         { status: 404 }
       );
     }
@@ -61,8 +83,7 @@ export async function POST(request: Request) {
         omitido: true,
         seller_id: String(cuenta.seller_id),
         expires_at: new Date(vencimiento).toISOString(),
-        mensaje:
-          "El acceso todavía tiene más de una hora de vigencia.",
+        mensaje: "El acceso todavía tiene más de una hora de vigencia.",
       });
     }
 
@@ -99,19 +120,14 @@ export async function POST(request: Request) {
       });
 
       return NextResponse.json(
-        {
-          error: "Mercado Libre no pudo renovar el acceso.",
-        },
+        { error: "Mercado Libre no pudo renovar el acceso." },
         { status: 502 }
       );
     }
 
     if (String(tokenData.user_id) !== String(cuenta.seller_id)) {
       return NextResponse.json(
-        {
-          error:
-            "El vendedor devuelto no coincide con la conexión guardada.",
-        },
+        { error: "El vendedor devuelto no coincide con la conexión guardada." },
         { status: 409 }
       );
     }
@@ -125,9 +141,7 @@ export async function POST(request: Request) {
       Number(tokenData.expires_in) <= 0
     ) {
       return NextResponse.json(
-        {
-          error: "Mercado Libre devolvió un vencimiento inválido.",
-        },
+        { error: "Mercado Libre devolvió un vencimiento inválido." },
         { status: 502 }
       );
     }
@@ -151,14 +165,23 @@ export async function POST(request: Request) {
       mensaje: "Los tokens se renovaron y guardaron correctamente.",
     });
   } catch (error) {
-    console.error(
-      "Error interno al renovar Mercado Libre:",
-      error
-    );
+    console.error("Error interno al renovar Mercado Libre:", error);
 
     return NextResponse.json(
       { error: "Ocurrió un error al renovar el acceso." },
       { status: 500 }
     );
+  } finally {
+    if (bloqueoAdquirido) {
+      try {
+        await sql`
+          UPDATE mercadolibre_refresh_lock
+          SET locked_until = '-infinity'
+          WHERE id = 1
+        `;
+      } catch (error) {
+        console.error("No se pudo liberar el bloqueo:", error);
+      }
+    }
   }
 }
