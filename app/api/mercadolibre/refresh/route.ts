@@ -4,7 +4,16 @@ import { neon } from "@neondatabase/serverless";
 
 export const dynamic = "force-dynamic";
 
-export async function POST() {
+export async function POST(request: Request) {
+  const secret = process.env.ML_REFRESH_SECRET;
+  const provided = request.headers.get("x-refresh-secret");
+
+  if (!secret || provided !== secret) {
+    return NextResponse.json(
+      { error: "No autorizado." },
+      { status: 401 }
+    );
+  }
   const databaseUrl = process.env.DATABASE_URL;
   const clientId = process.env.ML_CLIENT_ID;
   const clientSecret = process.env.ML_CLIENT_SECRET;
