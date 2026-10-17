@@ -5,9 +5,9 @@ import type { NextRequest } from "next/server";
 const COOKIE_NAME = "arigato_admin_session";
 
 export function isAdminAuthenticated(request: NextRequest): boolean {
-  const secret = process.env.ADMIN_PASSWORD;
+  const secret = process.env.ADMIN_SESSION_SECRET;
 
-  if (!secret) {
+  if (!secret || secret.length < 32) {
     return false;
   }
 
