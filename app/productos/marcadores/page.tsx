@@ -93,9 +93,11 @@ export default function MarcadoresPage() {
         >
           ARIGATO · MOMENTOS FELICES
         </span>
+
         <h1 style={{ fontSize: "36px", marginBottom: "12px" }}>
           Marcadores
         </h1>
+
         <p style={{ color: "#69645d", lineHeight: 1.6 }}>
           Marcadores para pizarras y momentos llenos de color.
         </p>
@@ -123,6 +125,8 @@ export default function MarcadoresPage() {
               producto.thumbnail ||
               producto.pictures?.find((foto) => foto.url)?.url;
 
+            const destino = `/productos/${producto.item_id}`;
+
             return (
               <article
                 key={producto.item_id}
@@ -131,13 +135,16 @@ export default function MarcadoresPage() {
                   borderRadius: "12px",
                   padding: "16px",
                   background: "#fff",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
                 <a
-                  href={producto.permalink}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ color: "inherit", textDecoration: "none" }}
+                  href={destino}
+                  style={{
+                    color: "inherit",
+                    textDecoration: "none",
+                  }}
                 >
                   <div
                     style={{
@@ -167,6 +174,7 @@ export default function MarcadoresPage() {
                   <h2 style={{ fontSize: "18px", lineHeight: 1.4 }}>
                     {producto.title}
                   </h2>
+
                   <p style={{ fontSize: "22px", fontWeight: 700 }}>
                     {formatoPrecio(producto)}
                   </p>
@@ -177,21 +185,19 @@ export default function MarcadoresPage() {
                 </p>
 
                 <a
-                  href={producto.permalink}
-                  target="_blank"
-                  rel="noreferrer"
+                  href={destino}
                   style={{
                     display: "block",
                     textAlign: "center",
                     padding: "12px",
                     borderRadius: "6px",
-                    background: "#222",
+                    background: "#292521",
                     color: "#fff",
                     textDecoration: "none",
-                    marginTop: "16px",
+                    marginTop: "auto",
                   }}
                 >
-                  Ver producto
+                  Ver detalles
                 </a>
               </article>
             );
