@@ -1,13 +1,25 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin/session", { cache: "no-store" })
+      .then(async (response) => {
+        if (!response.ok) return;
+        const data = await response.json();
+        setAuthenticated(data.autenticado === true);
+      })
+      .catch(() => {})
+      .finally(() => setChecking(false));
+  }, []);
 
   async function login(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -17,9 +29,7 @@ export default function AdminPage() {
     try {
       const response = await fetch("/api/admin/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
         cache: "no-store",
       });
@@ -41,32 +51,19 @@ export default function AdminPage() {
   }
 
   async function logout() {
-    await fetch("/api/admin/logout", {
-      method: "POST",
-      cache: "no-store",
-    });
-
-    setAuthenticated(false);
-    setPassword("");
-    setError("");
+    try {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+        cache: "no-store",
+      });
+    } finally {
+      setAuthenticated(false);
+      setPassword("");
+    }
   }
 
-  if (authenticated) {
-    return (
-      <main style={styles.main}>
-        <section style={styles.card}>
-          <h1>Administración ARIGATO</h1>
-          <p>Acceso autorizado.</p>
-          <p>
-            Próximamente vas a poder organizar tus productos,
-            elegir categorías y decidir cuáles mostrar en la tienda.
-          </p>
-          <button onClick={logout} style={styles.button}>
-            Cerrar sesión
-          </button>
-        </section>
-      </main>
-    );
+  if (checking) {
+    return <main style={styles.main}>Verificando sesión...</main>;
   }
 
   return (
@@ -75,35 +72,37 @@ export default function AdminPage() {
         <h1>ARIGATO</h1>
         <p>Administración de la tienda</p>
 
-        <form onSubmit={login}>
-          <label htmlFor="admin-password">
-            Contraseña de administración
-          </label>
+        {authenticated ? (
+          <>
+            <h2>Acceso autorizado</h2>
+            <p>La sesión está activa.</p>
+            <p>El catálogo de productos todavía está en preparación.</p>
+            <button onClick={logout} style={styles.button}>
+              Cerrar sesión
+            </button>
+          </>
+        ) : (
+          <form onSubmit={login}>
+            <label htmlFor="admin-password">
+              Contraseña de administración
+            </label>
+            <input
+              id="admin-password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              autoComplete="current-password"
+              required
+              style={styles.input}
+            />
 
-          <input
-            id="admin-password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            autoComplete="current-password"
-            required
-            style={styles.input}
-          />
+            {error && <p role="alert" style={styles.error}>{error}</p>}
 
-          {error && (
-            <p role="alert" style={styles.error}>
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            style={styles.button}
-          >
-            {loading ? "Verificando..." : "Ingresar"}
-          </button>
-        </form>
+            <button type="submit" disabled={loading} style={styles.button}>
+              {loading ? "Verificando..." : "Ingresar"}
+            </button>
+          </form>
+        )}
       </section>
     </main>
   );
@@ -124,7 +123,7 @@ const styles: Record<string, React.CSSProperties> = {
     maxWidth: "420px",
     padding: "32px",
     borderRadius: "12px",
-    background: "#ffffff",
+    background: "#fff",
     boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
   },
   input: {
@@ -134,7 +133,7 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: "8px",
     marginBottom: "16px",
     padding: "12px",
-    border: "1px solid #cccccc",
+    border: "1px solid #ccc",
     borderRadius: "6px",
     fontSize: "16px",
   },
@@ -143,13 +142,10 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "12px",
     border: "none",
     borderRadius: "6px",
-    background: "#222222",
-    color: "#ffffff",
+    background: "#222",
+    color: "#fff",
     fontSize: "16px",
     cursor: "pointer",
   },
-  error: {
-    color: "#b42318",
-    fontSize: "14px",
-  },
+  error: { color: "#b42318", fontSize: "14px" },
 };
