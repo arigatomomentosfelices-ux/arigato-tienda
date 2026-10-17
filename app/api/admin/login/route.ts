@@ -16,10 +16,11 @@ function createSignature(expiresAt: number, secret: string) {
 
 export async function POST(request: NextRequest) {
   const adminPassword = process.env.ADMIN_PASSWORD;
+  const sessionSecret = process.env.ADMIN_SESSION_SECRET;
 
-  if (!adminPassword) {
+  if (!adminPassword || !sessionSecret || sessionSecret.length < 32) {
     return NextResponse.json(
-      { error: "La autenticación no está configurada." },
+      { error: "La autenticación no está configurada correctamente." },
       { status: 500 }
     );
   }
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
   const expiresAt =
     Math.floor(Date.now() / 1000) + SESSION_DURATION_SECONDS;
 
-  const signature = createSignature(expiresAt, adminPassword);
+  const signature = createSignature(expiresAt, sessionSecret);
   const session = `${expiresAt}.${signature}`;
 
   const response = NextResponse.json({
