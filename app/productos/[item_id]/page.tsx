@@ -29,9 +29,17 @@ export default function ProductoPage() {
   const [producto, setProducto] = useState<Producto | null>(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
+  const [fotoSeleccionada, setFotoSeleccionada] = useState("");
+  const [cantidad, setCantidad] = useState(1);
 
   useEffect(() => {
     let activa = true;
+
+    setCargando(true);
+    setError("");
+    setProducto(null);
+    setFotoSeleccionada("");
+    setCantidad(1);
 
     fetch("/api/store-products", { cache: "no-store" })
       .then(async (response) => {
@@ -71,14 +79,6 @@ export default function ProductoPage() {
     };
   }, [itemId]);
 
-  const precio = producto
-    ? new Intl.NumberFormat("es-AR", {
-        style: "currency",
-        currency: producto.currency_id || "ARS",
-        maximumFractionDigits: 2,
-      }).format(Number(producto.price))
-    : "";
-
   const fotos = producto
     ? [
         ...new Set(
@@ -89,6 +89,20 @@ export default function ProductoPage() {
         ),
       ]
     : [];
+
+  const imagenPrincipal = fotos.includes(fotoSeleccionada)
+    ? fotoSeleccionada
+    : fotos[0] ?? "";
+
+  const precioUnitario = producto ? Number(producto.price) : 0;
+  const stock = producto?.available_quantity ?? 0;
+
+  const formatoPrecio = (valor: number) =>
+    new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: producto?.currency_id || "ARS",
+      maximumFractionDigits: 2,
+    }).format(valor);
 
   return (
     <main
@@ -101,10 +115,14 @@ export default function ProductoPage() {
       }}
     >
       <a
-        href="/productos/marcadores"
+        href={
+          producto?.arigato_category?.trim().toLowerCase() === "marcadores"
+            ? "/productos/marcadores"
+            : "/productos"
+        }
         style={{ color: "#69645d", textDecoration: "none" }}
       >
-        ← Volver a Marcadores
+        ← Volver a productos
       </a>
 
       {cargando ? (
@@ -127,7 +145,8 @@ export default function ProductoPage() {
         <section
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))",
+            gridTemplateColumns:
+              "repeat(auto-fit, minmax(min(100%, 340px), 1fr))",
             gap: "40px",
             marginTop: "32px",
             alignItems: "start",
@@ -142,24 +161,33 @@ export default function ProductoPage() {
                 padding: "24px",
               }}
             >
-              {fotos[0] ? (
+              {imagenPrincipal ? (
                 <img
-                  src={fotos[0]}
+                  src={imagenPrincipal}
                   alt={producto.title}
                   style={{
                     display: "block",
                     width: "100%",
-                    maxHeight: "480px",
+                    height: "420px",
                     objectFit: "contain",
                   }}
                 />
               ) : (
-                <p>Imagen próximamente</p>
+                <div
+                  style={{
+                    height: "300px",
+                    display: "grid",
+                    placeItems: "center",
+                  }}
+                >
+                  Imagen próximamente
+                </div>
               )}
             </div>
 
-            {fotos.length > 1 && (
+            {fotos.length > 0 && (
               <div
+                aria-label="Fotos del producto"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fill, minmax(76px, 1fr))",
@@ -167,28 +195,41 @@ export default function ProductoPage() {
                   marginTop: "12px",
                 }}
               >
-                {fotos.slice(1).map((foto, index) => (
-                  <div
-                    key={`${foto}-${index}`}
-                    style={{
-                      background: "#fff",
-                      border: "1px solid #e8e0d5",
-                      borderRadius: "8px",
-                      padding: "6px",
-                    }}
-                  >
-                    <img
-                      src={foto}
-                      alt={`${producto.title} - foto ${index + 2}`}
-                      loading="lazy"
+                {fotos.map((foto, index) => {
+                  const seleccionada = imagenPrincipal === foto;
+
+                  return (
+                    <button
+                      key={`${foto}-${index}`}
+                      type="button"
+                      onClick={() => setFotoSeleccionada(foto)}
+                      aria-label={`Ver foto ${index + 1}`}
+                      aria-pressed={seleccionada}
                       style={{
-                        width: "100%",
-                        height: "76px",
-                        objectFit: "contain",
+                        cursor: "pointer",
+                        background: "#fff",
+                        border: seleccionada
+                          ? "2px solid #292521"
+                          : "1px solid #e8e0d5",
+                        borderRadius: "8px",
+                        padding: "5px",
+                        height: "88px",
+                        overflow: "hidden",
                       }}
-                    />
-                  </div>
-                ))}
+                    >
+                      <img
+                        src={foto}
+                        alt={`${producto.title}, foto ${index + 1}`}
+                        loading="lazy"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      />
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -222,13 +263,13 @@ export default function ProductoPage() {
             </h1>
 
             <p style={{ fontSize: "30px", fontWeight: 700, margin: "20px 0" }}>
-              {precio}
+              {formatoPrecio(precioUnitario)}
             </p>
 
             <p style={{ color: "#69645d", lineHeight: 1.6 }}>
-              {producto.available_quantity > 0
-                ? `Disponible · ${producto.available_quantity} unidades en stock`
-                : "Consultanos por disponibilidad."}
+              {stock > 0
+                ? `Disponible · ${stock} unidades en stock`
+                : "Sin stock disponible"}
             </p>
 
             <div
@@ -238,16 +279,117 @@ export default function ProductoPage() {
                 paddingTop: "20px",
               }}
             >
+              <h2 style={{ fontSize: "18px", marginBottom: "14px" }}>
+                ¿Cuántas unidades querés?
+              </h2>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "18px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    border: "1px solid #e8e0d5",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <button
+                    type="button"
+                    aria-label="Restar una unidad"
+                    disabled={cantidad <= 1}
+                    onClick={() =>
+                      setCantidad((actual) => Math.max(1, actual - 1))
+                    }
+                    style={{
+                      width: "44px",
+                      height: "44px",
+                      border: "none",
+                      background: "#f8f6f1",
+                      fontSize: "22px",
+                      cursor: cantidad <= 1 ? "not-allowed" : "pointer",
+                      opacity: cantidad <= 1 ? 0.4 : 1,
+                    }}
+                  >
+                    −
+                  </button>
+
+                  <span
+                    aria-live="polite"
+                    style={{
+                      minWidth: "48px",
+                      textAlign: "center",
+                      fontSize: "18px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {cantidad}
+                  </span>
+
+                  <button
+                    type="button"
+                    aria-label="Sumar una unidad"
+                    disabled={cantidad >= stock}
+                    onClick={() =>
+                      setCantidad((actual) => Math.min(stock, actual + 1))
+                    }
+                    style={{
+                      width: "44px",
+                      height: "44px",
+                      border: "none",
+                      background: "#f8f6f1",
+                      fontSize: "22px",
+                      cursor: cantidad >= stock ? "not-allowed" : "pointer",
+                      opacity: cantidad >= stock ? 0.4 : 1,
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+
+                <span style={{ fontSize: "13px", color: "#777064" }}>
+                  Máximo: {stock} unidades
+                </span>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "12px",
+                  marginTop: "22px",
+                  paddingTop: "18px",
+                  borderTop: "1px solid #e8e0d5",
+                }}
+              >
+                <span>Subtotal ({cantidad} {cantidad === 1 ? "unidad" : "unidades"})</span>
+                <strong style={{ fontSize: "20px" }}>
+                  {formatoPrecio(precioUnitario * cantidad)}
+                </strong>
+              </div>
+            </div>
+
+            <div
+              style={{
+                borderTop: "1px solid #e8e0d5",
+                paddingTop: "20px",
+              }}
+            >
               <h2 style={{ fontSize: "18px" }}>Sobre este producto</h2>
               <p style={{ color: "#69645d", lineHeight: 1.7 }}>
-                {producto.title}. Consultanos si necesitás más información
-                sobre sus características, personalización o disponibilidad.
+                {producto.title}. Estamos preparando la descripción completa
+                para que conozcas sus características y detalles.
               </p>
             </div>
 
             <p style={{ fontSize: "13px", color: "#777064", lineHeight: 1.5 }}>
-              Estamos preparando nuestra experiencia de compra directa.
-              Próximamente vas a poder completar tu pedido desde ARIGATO.
+              La compra directa desde ARIGATO estará disponible próximamente.
             </p>
 
             <a
